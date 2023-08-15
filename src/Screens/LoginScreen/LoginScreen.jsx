@@ -3,12 +3,21 @@ import { useState, useEffect } from "react";
 import cover from '../../data/Photo_BG.png';
 
 
-export default function LoginScreen() {
+export default function LoginScreen({login}) {
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+    const [name, setName] = useState('');
+    const [password, setPassword] = useState('');
 
-    const moveIosForm = { marginTop: isKeyboardVisible ? 335 : '100%' };
-    const moveAndroidForm = { marginTop: isKeyboardVisible ? 255 : 323 };
+    const moveIosForm = { marginTop: isKeyboardVisible ? '80%' : '100%' };
+    const moveAndroidForm = { marginTop: isKeyboardVisible ? '37%' : '75%' };
     
+    const onSubmit = () => {
+        const loggedUser = { name: name, password: password }
+        login(loggedUser);
+        setName('');
+        setPassword('');
+    }
+
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () =>
             setKeyboardVisible(true)
@@ -34,12 +43,12 @@ export default function LoginScreen() {
                             <View style={s.topTextContainer}>
                                 <Text style={s.headerText}>Увійти</Text>
                             </View>
-                            <KeyboardAvoidingView behavior={Platform.OS == "ios" ? 'padding' : 'height'}>
-                                <TextInput placeholder="Адреса електронної пошти" type="email" name='email' style={s.input} />
-                                <TextInput placeholder="Пароль" type="text" name='password' style={s.input} />
-                            </KeyboardAvoidingView>
-                            <Pressable style={s.button}>
-                                <Text style={s.buttonText}>Зареєструватися</Text>
+                            {/* <KeyboardAvoidingView behavior={Platform.OS == "ios" ? 'padding' : 'height'}> */}
+                            <TextInput placeholder="Адреса електронної пошти" type="email" name='email' style={s.input} value={name} onChangeText={value => setName(value)}/>
+                                <TextInput placeholder="Пароль" type="text" name='password' style={s.input} value={password} onChangeText={value => setPassword(value)}/>
+                            {/* </KeyboardAvoidingView> */}
+                            <Pressable style={s.button} onPress={onSubmit}>
+                                <Text style={s.buttonText}>Увійти</Text>
                             </Pressable>
                             <View style={s.bottomTextContainer}>
                                 <Text>Немає акаунту? <Text style={{
@@ -61,17 +70,16 @@ const s = StyleSheet.create({
         flex: 1,
     },
     bkgroundImg: {
+        // position: "absolute",
         resizeMode: 'cover',
         flex: 1,
     },
     registerFrom: {
         flex: 1,
         backgroundColor: "#FFFFFF",
-        height: 489,
         alignItems: 'center',
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
-        marginTop: 323,
         paddingBottom: 0,
     },
     topTextContainer: {

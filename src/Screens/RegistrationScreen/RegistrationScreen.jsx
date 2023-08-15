@@ -3,15 +3,23 @@ import { useState, useEffect } from "react";
 import { AntDesign } from '@expo/vector-icons';
 import cover from '../../data/Photo_BG.png';
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({register}) {
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-    const [name, setName] = useState('');
+    const [login, setLogin] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const moveIosForm = { marginBottom: isKeyboardVisible ? 170 : 0 };
-    const moveAndroidForm = { height: isKeyboardVisible ? 370 : 549 };
-    const moveAndroidAvatar = { marginVertical: isKeyboardVisible ? -25 : 0 };
+    const moveIosForm = { marginBottom: isKeyboardVisible ? '37%' : "0%" };
+    const moveAndroidForm = { height: isKeyboardVisible ? '92%' : '70%' };
+    const moveAndroidAvatar = { marginVertical: isKeyboardVisible ? '-2%' : '0%' };
+
+    const onSubmit = () => {
+        const newUser = { name: login, email: email, password: password };
+        register(newUser);
+        setLogin('');
+        setEmail('');
+        setPassword('');
+    }
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () =>
@@ -43,11 +51,11 @@ export default function RegistrationScreen() {
                                 <Text style={s.headerText}>Реєстрація</Text>
                             </View>
                             <KeyboardAvoidingView behavior={Platform.OS == "ios" ? 'padding' : 'height'} keyboardVerticalOffset={-200}>
-                                <TextInput placeholder="Логін" type="text" name='login' style={s.input} />
-                                <TextInput placeholder="Адреса електронної пошти" type="email" name='email' style={s.input} />
-                                <TextInput placeholder="Пароль" type="text" name='password' style={s.input} />
+                                <TextInput placeholder="Логін" type="text" name='login' style={s.input} value={login} onChangeText={setLogin} />
+                                <TextInput placeholder="Адреса електронної пошти" type="email" name='email' style={s.input} value={email} onChangeText={setEmail} />
+                                <TextInput placeholder="Пароль" type="text" name='password' style={s.input} value={password} onChangeText={setPassword} />
                             </KeyboardAvoidingView>
-                            <Pressable style={s.button}>
+                            <Pressable style={s.button} onPress={onSubmit}>
                                 <Text style={s.buttonText}>Зареєструватися</Text>
                             </Pressable>
                             <View style={s.bottomTextContainer}>
@@ -145,8 +153,8 @@ const s = StyleSheet.create({
         borderTopRightRadius: 25,
         borderBottomLeftRadius: 25,
         borderBottomRightRadius: 25,
-        marginBottom: 20,
-        marginTop: 20
+        marginBottom: 10,
+        marginTop: 10
     },
     buttonText: {
         fontSize: 16,
@@ -159,7 +167,7 @@ const s = StyleSheet.create({
     bottomTextContainer: {
         width: 343,
         height: 36,
-        marginBottom: 30,
+        marginBottom: 10,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -170,10 +178,5 @@ const s = StyleSheet.create({
         lineHeight: 19,
         textAlign: 'center',
     },
-    // keyboard: {
-    //     flex: 1,
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    // },
 })
     
